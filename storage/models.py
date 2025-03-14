@@ -1,12 +1,13 @@
 from django.db import models
 
+
 # Represents a type of action
 class ActionType(models.Model):
     name = models.CharField(
         max_length=50,
         unique=True,
         verbose_name="Název typu",
-        help_text="Unikátní název typu akce."
+        help_text="Unikátní název typu akce.",
     )
 
     class Meta:
@@ -16,18 +17,17 @@ class ActionType(models.Model):
     def __str__(self):
         return self.name
 
+
 # Represents an action linked to a specific type
 class Action(models.Model):
     type = models.ForeignKey(
         ActionType,
         on_delete=models.CASCADE,
         verbose_name="Typ akce",
-        help_text="Vyberte typ akce."
+        help_text="Vyberte typ akce.",
     )
     name = models.CharField(
-        max_length=255,
-        verbose_name="Název akce",
-        help_text="Zadejte název akce."
+        max_length=255, verbose_name="Název akce", help_text="Zadejte název akce."
     )
 
     class Meta:
