@@ -16,7 +16,7 @@ This project is a simple web-based storage platform for file exchange. It allows
 ## Installation
 
 ### Prerequisites
-- Python (>= 3.8)
+- Python (>= 3.11)
 - pip
 - A database system (e.g., PostgreSQL, MySQL, SQLite)
 
