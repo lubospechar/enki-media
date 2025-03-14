@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth import get_user_model
 
 # Represents a type of action
 class ActionType(models.Model):
@@ -36,3 +36,39 @@ class Action(models.Model):
 
     def __str__(self):
         return f"{self.type}: {self.name}"
+
+# Represents a stored_file uploaded by a user
+class UploadedFile(models.Model):
+    user = models.ForeignKey(
+        get_user_model(),
+        on_delete=models.CASCADE,
+        verbose_name="Uživatel",
+        help_text="Uživatel, který soubor nahrál."
+    )
+    author = models.CharField(
+        max_length=255,
+        verbose_name="Autor",
+        help_text="Autor souboru."
+    )
+    stored_file = models.FileField(
+        upload_to="uploads/%Y/%m/",
+        verbose_name="Soubor",
+        help_text="Nahraný soubor."
+    )
+    uploaded_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Datum nahrání",
+        help_text="Datum a čas, kdy byl soubor nahrán."
+    )
+    is_public = models.BooleanField(
+        default=False,
+        verbose_name="Veřejný přístup",
+        help_text="Určuje, zda je soubor veřejně dostupný."
+    )
+
+    class Meta:
+        verbose_name = "Nahraný soubor"
+        verbose_name_plural = "Nahrané soubory"
+
+    def __str__(self):
+        return f"{self.stored_file.name} ({self.author})"
