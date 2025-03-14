@@ -26,3 +26,15 @@ class UploadedFileAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return qs
         return qs.filter(user=request.user)
+
+    def has_change_permission(self, request, obj=None):
+        """Allow users to change only their own files"""
+        if request.user.is_superuser:
+            return True
+        return obj is None or obj.user == request.user
+
+    def has_delete_permission(self, request, obj=None):
+        """Allow users to delete only their own files"""
+        if request.user.is_superuser:
+            return True
+        return obj is None or obj.user == request.user
