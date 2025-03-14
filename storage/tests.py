@@ -9,6 +9,10 @@ class ActionTypeModelTests(TestCase):
         self.assertEqual(action_type.name, "Conference")
         self.assertEqual(str(action_type), "Conference")
 
+    def test_str_method(self):
+        """Test the __str__ method of ActionType"""
+        action_type = ActionType.objects.create(name="Seminar")
+        self.assertEqual(str(action_type), "Seminar")
 
 class ActionModelTests(TestCase):
     def test_create_action(self):
@@ -19,6 +23,12 @@ class ActionModelTests(TestCase):
         self.assertEqual(action.name, "Django Workshop")
         self.assertEqual(action.type, action_type)
         self.assertEqual(str(action), "Seminar: Django Workshop")
+
+    def test_str_method(self):
+        """Test the __str__ method of Action"""
+        action_type = ActionType.objects.create(name="Project")
+        action = Action.objects.create(type=action_type, name="New App Development")
+        self.assertEqual(str(action), "Project: New App Development")
 
     def test_delete_action_type_cascade(self):
         """Test that deleting an ActionType deletes associated Actions"""
