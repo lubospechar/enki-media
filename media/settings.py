@@ -73,6 +73,4 @@ MEDIA_ROOT = config("DJANGO_MEDIA_ROOT")
 STATIC_URL = config("DJANGO_STATIC_URL")
 MEDIA_URL = config("DJANGO_MEDIA_URL")
 
-
-
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
