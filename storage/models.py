@@ -1,7 +1,13 @@
 import uuid
 
+from django.conf import settings
 from django.db import models
 from django.contrib.auth import get_user_model
+import qrcode
+from io import BytesIO
+import base64
+from django.core.files.base import ContentFile
+
 
 # Represents a type of action
 class ActionType(models.Model):
@@ -81,3 +87,37 @@ class UploadedFile(models.Model):
 
     def __str__(self):
         return f"{self.stored_file.name} ({self.author})"
+
+
+    def download_url(self):
+        return f"{settings.DOWNLOAD_URL}{self.id}"
+
+
+    def qr_code_base64(self):
+        """
+        Generates a QR code dynamically as a Base64-encoded image.
+        """
+        # Generate the QR code data from the download URL
+        url = self.download_url()
+
+        # Create a QR code object
+        qr = qrcode.QRCode(
+            version=1,
+            error_correction=qrcode.constants.ERROR_CORRECT_L,
+            box_size=10,
+            border=4,
+        )
+        qr.add_data(url)
+        qr.make(fit=True)
+
+        # Create the QR code image
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        # Save the image into a BytesIO buffer
+        buffer = BytesIO()
+        img.save(buffer, format="PNG")
+        buffer.seek(0)
+
+        # Encode the image as Base64
+        img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        return f"data:image/png;base64,{img_base64}"
