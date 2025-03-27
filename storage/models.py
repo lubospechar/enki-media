@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.contrib.auth import get_user_model
 
@@ -39,6 +41,13 @@ class Action(models.Model):
 
 # Represents a stored_file uploaded by a user
 class UploadedFile(models.Model):
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        verbose_name="UUID"
+    )
+
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
