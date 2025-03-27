@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
+
 from storage.models import ActionType, Action, UploadedFile
 
 @admin.register(ActionType)
@@ -16,7 +18,7 @@ class ActionAdmin(admin.ModelAdmin):
 
 @admin.register(UploadedFile)
 class UploadedFileAdmin(admin.ModelAdmin):
-    list_display = ("stored_file", "author", "user", "uploaded_at", "is_public")
+    list_display = ("id", "stored_file", "author", "user", "uploaded_at", "is_public", 'qr_code_preview')
     list_filter = ("is_public", "uploaded_at")
     search_fields = ("stored_file", "author", "user__username")
     ordering = ("-uploaded_at",)
@@ -38,3 +40,12 @@ class UploadedFileAdmin(admin.ModelAdmin):
         if request.user.is_superuser:
             return True
         return obj is None or obj.user == request.user
+
+    def qr_code_preview(self, obj):
+        """
+        Displays a dynamically generated QR code as an image in the admin list view.
+        """
+        qr_code_base64 = obj.qr_code_base64()  # Dynamically generate the QR code
+        return mark_safe(f'<img src="{qr_code_base64}" width="100" height="100" />')
+
+    qr_code_preview.short_description = "QR Code"
