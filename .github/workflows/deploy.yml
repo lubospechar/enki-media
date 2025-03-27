@@ -23,9 +23,8 @@ jobs:
       - name: Deploy to server
         run: |
           ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-          cd /cesta/k/projektu
+          cd secrets.APP_DIR
           git pull origin main
-          source venv/bin/activate  # pokud používáš virtualenv
+          source .venv/bin/activate  # pokud používáš virtualenv
           pip install -r requirements.txt
-          systemctl restart muj-service
           EOF
