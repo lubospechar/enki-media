@@ -18,7 +18,7 @@ class ActionAdmin(admin.ModelAdmin):
 
 @admin.register(UploadedFile)
 class UploadedFileAdmin(admin.ModelAdmin):
-    list_display = ("id", "stored_file", "author", "user", "uploaded_at", "is_public", 'qr_code_preview')
+    list_display = ('download_url', "author", "user", "uploaded_at", "is_public", 'qr_code_preview')
     list_filter = ("is_public", "uploaded_at")
     search_fields = ("stored_file", "author", "user__username")
     ordering = ("-uploaded_at",)

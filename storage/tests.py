@@ -111,7 +111,7 @@ class UploadedFileAdminTests(TestCase):
 
     def test_admin_list_display(self):
         """Test that admin list display is set correctly"""
-        expected_fields = ("id", "stored_file", "author", "user", "uploaded_at", "is_public", "qr_code_preview")
+        expected_fields = ('download_url', "author", "user", "uploaded_at", "is_public", 'qr_code_preview')
         self.assertEqual(self.uploaded_file_admin.list_display, expected_fields)
 
     def test_admin_queryset_superuser(self):
