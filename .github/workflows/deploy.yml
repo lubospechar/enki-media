@@ -26,5 +26,6 @@ jobs:
           cd ${{ secrets.APP_DIR }}
           git pull origin main
           source .venv/bin/activate
+          cd enki-media
           pip install -r requirements.txt
           EOF
