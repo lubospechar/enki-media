@@ -23,8 +23,8 @@ jobs:
       - name: Deploy to server
         run: |
           ssh ${{ secrets.REMOTE_USER }}@${{ secrets.REMOTE_HOST }} << 'EOF'
-          cd secrets.APP_DIR
+          cd ${{ secrets.APP_DIR }}
           git pull origin main
-          source .venv/bin/activate  # pokud používáš virtualenv
+          source .venv/bin/activate
           pip install -r requirements.txt
           EOF
