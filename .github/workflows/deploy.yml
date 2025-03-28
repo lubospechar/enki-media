@@ -28,6 +28,6 @@ jobs:
           git pull origin main
           pip install -r requirements.txt
           python manage.py migrate
-          python manege.py collectstatic
+          python manage.py collectstatic --noinput
           python manage.py test
           EOF
