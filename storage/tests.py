@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from storage.models import ActionType, Action
 from django.contrib.admin.sites import AdminSite
 from django.test import TestCase, Client, RequestFactory
 from django.contrib.auth import get_user_model
