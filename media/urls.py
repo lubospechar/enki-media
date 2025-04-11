@@ -2,13 +2,13 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from storage.views import PublicFileView
-
-
+from storage.views import PublicFileView, QRCodeDownloadView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('files/<uuid:pk>/', PublicFileView.as_view(), name='public_file'),
+    path('<uuid:pk>/download_qr_code/', QRCodeDownloadView.as_view(), name='download_qr_code'),
+
 ]
 
 if settings.DEBUG:

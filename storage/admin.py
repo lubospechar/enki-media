@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.urls import reverse
 from django.utils.safestring import mark_safe
 
 from storage.models import ActionType, Action, UploadedFile
@@ -18,7 +19,7 @@ class ActionAdmin(admin.ModelAdmin):
 
 @admin.register(UploadedFile)
 class UploadedFileAdmin(admin.ModelAdmin):
-    list_display = ('download_url', "author", "user", "uploaded_at", "is_public", 'qr_code_preview')
+    list_display = ('download_url', "author", "user", "uploaded_at", "is_public", 'qr_code_preview', 'download_qr_code')
     list_filter = ("is_public", "uploaded_at")
     search_fields = ("stored_file", "author", "user__username")
     ordering = ("-uploaded_at",)
@@ -49,3 +50,10 @@ class UploadedFileAdmin(admin.ModelAdmin):
         return mark_safe(f'<img src="{qr_code_base64}" width="100" height="100" />')
 
     qr_code_preview.short_description = "QR Code"
+
+    def download_qr_code(self, obj):
+        url = reverse('download_qr_code', args=[obj.pk])  # Vygeneruje URL pro view
+        return mark_safe(f'<a href="{url}">Stáhnout QR kód</a>')
+
+    download_qr_code.short_description = "Stáhnout QR kód"
+
