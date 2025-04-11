@@ -5,7 +5,7 @@ from django.conf.urls.static import static
 from storage.views import PublicFileView, QRCodeDownloadView
 
 urlpatterns = [
-    path("/admin", admin.site.urls),
+    path("admin/", admin.site.urls),
     path('files/<uuid:pk>/', PublicFileView.as_view(), name='public_file'),
     path('<uuid:pk>/download_qr_code/', QRCodeDownloadView.as_view(), name='download_qr_code'),
 
