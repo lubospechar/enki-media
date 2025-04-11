@@ -85,3 +85,7 @@ class UploadedFile(models.Model):
         # Encode the image as Base64
         img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
         return f"data:image/png;base64,{img_base64}"
+
+    def qr_code_data(self):
+        return reverse('download_qr_code', args=[self.pk])
+
