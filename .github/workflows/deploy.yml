@@ -26,7 +26,7 @@ jobs:
           source pyenv/bin/activate
           cd ${{ secrets.APP_DIR }}
           git pull origin main
-          pip install -r requirements.txt
+          pip install --upgrade -r requirements.txt
           python manage.py migrate
           python manage.py collectstatic --noinput
           sudo /etc/init.d/uwsgi.media restart
