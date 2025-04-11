@@ -12,37 +12,30 @@ from django.core.files.base import ContentFile
 # Represents a stored_file uploaded by a user
 class UploadedFile(models.Model):
     id = models.UUIDField(
-        primary_key=True,
-        default=uuid.uuid4,
-        editable=False,
-        verbose_name="UUID"
+        primary_key=True, default=uuid.uuid4, editable=False, verbose_name="UUID"
     )
 
     user = models.ForeignKey(
         get_user_model(),
         on_delete=models.CASCADE,
         verbose_name="Uživatel",
-        help_text="Uživatel, který soubor nahrál."
+        help_text="Uživatel, který soubor nahrál.",
     )
     author = models.CharField(
-        max_length=255,
-        verbose_name="Autor",
-        help_text="Autor souboru."
+        max_length=255, verbose_name="Autor", help_text="Autor souboru."
     )
     stored_file = models.FileField(
-        upload_to="uploads/%Y/%m/",
-        verbose_name="Soubor",
-        help_text="Nahraný soubor."
+        upload_to="uploads/%Y/%m/", verbose_name="Soubor", help_text="Nahraný soubor."
     )
     uploaded_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name="Datum nahrání",
-        help_text="Datum a čas, kdy byl soubor nahrán."
+        help_text="Datum a čas, kdy byl soubor nahrán.",
     )
     is_public = models.BooleanField(
         default=False,
         verbose_name="Veřejný přístup",
-        help_text="Určuje, zda je soubor veřejně dostupný."
+        help_text="Určuje, zda je soubor veřejně dostupný.",
     )
 
     class Meta:
@@ -52,10 +45,8 @@ class UploadedFile(models.Model):
     def __str__(self):
         return f"{self.stored_file.name} ({self.author})"
 
-
     def download_url(self):
         return f"{settings.DOWNLOAD_URL}{self.id}"
-
 
     def qr_code_base64(self):
         """
@@ -83,9 +74,8 @@ class UploadedFile(models.Model):
         buffer.seek(0)
 
         # Encode the image as Base64
-        img_base64 = base64.b64encode(buffer.getvalue()).decode('utf-8')
+        img_base64 = base64.b64encode(buffer.getvalue()).decode("utf-8")
         return f"data:image/png;base64,{img_base64}"
 
     def qr_code_data(self):
-        return reverse('download_qr_code', args=[self.pk])
-
+        return reverse("download_qr_code", args=[self.pk])

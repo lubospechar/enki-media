@@ -9,6 +9,7 @@ from django.views.generic.detail import DetailView
 from .models import UploadedFile
 from urllib.parse import quote
 
+
 class PublicFileView(DetailView):
     model = UploadedFile
     context_object_name = "uploaded_file"
@@ -22,17 +23,20 @@ class PublicFileView(DetailView):
         file = obj.stored_file
         file_name = file.name.split("/")[-1]
 
-        response = HttpResponse(file.open("rb"), content_type="application/octet-stream")
+        response = HttpResponse(
+            file.open("rb"), content_type="application/octet-stream"
+        )
 
         # Fallback filename (ASCII only), and UTF-8 encoded filename
         ascii_filename = file_name.encode("ascii", "ignore").decode()
         utf8_filename = quote(file_name)
 
         response["Content-Disposition"] = (
-            f'attachment; filename="{ascii_filename}"; filename*=UTF-8\'\'{utf8_filename}'
+            f"attachment; filename=\"{ascii_filename}\"; filename*=UTF-8''{utf8_filename}"
         )
 
         return response
+
 
 class QRCodeDownloadView(LoginRequiredMixin, View):
     """
@@ -45,10 +49,7 @@ class QRCodeDownloadView(LoginRequiredMixin, View):
         except UploadedFile.DoesNotExist:
             raise Http404("Objekt Nahraný soubor neexistuje nebo byl odstraněn.")
 
-
-        qr_data = reverse('download_qr_code',
-                          args=[uploaded_file.pk])
-
+        qr_data = reverse("download_qr_code", args=[uploaded_file.pk])
 
         qr = qrcode.QRCode(
             version=1,
@@ -59,17 +60,15 @@ class QRCodeDownloadView(LoginRequiredMixin, View):
         qr.add_data(qr_data)
         qr.make(fit=True)
 
-
         img = qr.make_image(fill_color="black", back_color="white")
         img = img.resize((900, 900))
-
 
         buffer = BytesIO()
         img.save(buffer, format="PNG")
         buffer.seek(0)
 
-
         response = HttpResponse(buffer, content_type="image/png")
-        response['Content-Disposition'] = f'attachment; filename="{uploaded_file.pk}_qr_code.png"'
+        response["Content-Disposition"] = (
+            f'attachment; filename="{uploaded_file.pk}_qr_code.png"'
+        )
         return response
-

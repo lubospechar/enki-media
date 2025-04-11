@@ -16,7 +16,10 @@ def delete_old_file_on_update(sender, instance, **kwargs):
     except UploadedFile.DoesNotExist:
         return
 
-    if old_instance.stored_file and old_instance.stored_file.name != instance.stored_file.name:
+    if (
+        old_instance.stored_file
+        and old_instance.stored_file.name != instance.stored_file.name
+    ):
         old_instance.stored_file.delete(save=False)
 
 
