@@ -54,7 +54,7 @@ class UploadedFileAdmin(admin.ModelAdmin):
     qr_code_preview.short_description = "QR Code"
 
     def download_qr_code(self, obj):
-        url = reverse("download_qr_code", args=[obj.pk])  # Vygeneruje URL pro view
+        url = reverse("download_qr_code", args=[obj.pk])
         return mark_safe(f'<a href="{url}">Stáhnout QR kód</a>')
 
     download_qr_code.short_description = "Stáhnout QR kód"
